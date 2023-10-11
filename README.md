@@ -13,10 +13,13 @@ This is the frontend implementation of earlier backend code at
 
 1.  **Endpoints:**
 
-  GET - https://ela5l4r1wf.execute-api.ap-south-1.amazonaws.com/
+1. Frontend Link.
 
-  GET - https://ela5l4r1wf.execute-api.ap-south-1.amazonaws.com/api
+    GET - https://vercel.com/coderraj07/api-filters-frontend
 
+1. Backend Link.  
+
+    GET - https://ela5l4r1wf.execute-api.ap-south-1.amazonaws.com/api
 
 ## Running the App locally
 
@@ -31,7 +34,6 @@ To run the app locally, follow these steps:
    
    ```cmd
    npm start
-
 
 Once the server is running, you can access the APP at 
 

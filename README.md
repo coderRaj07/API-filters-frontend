@@ -15,7 +15,7 @@ This is the frontend implementation of earlier backend code at
 
 1. Frontend Link.
 
-    GET - https://vercel.com/coderraj07/api-filters-frontend
+    GET - https://api-filters-frontend-q3e44mz33-coderraj07.vercel.app/
 
 1. Backend Link.  
 

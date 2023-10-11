@@ -1,20 +1,29 @@
 import React, { useState, useEffect } from 'react';
-import Table from 'react-bootstrap/esm/Table';
-import Container from 'react-bootstrap/esm/Container';
-import Form from 'react-bootstrap/esm/Form';
-import InputGroup from 'react-bootstrap/esm/InputGroup';
+import Table from 'react-bootstrap/Table';
+import Container from 'react-bootstrap/Container';
+import Form from 'react-bootstrap/Form';
+import InputGroup from 'react-bootstrap/InputGroup';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios';
+import Select from 'react-select';
 
 function App() {
   const [search, setSearch] = useState('');
   const [featured, setFeatured] = useState(false);
-  const [price, setPrice] = useState('');
+  const [selectedPrices, setSelectedPrices] = useState([]);
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  // Predefined array of prices
-  const predefinedPrices = [154, 404, 501, 701, 204, 1154, 505, 304];
+  const predefinedPrices = [
+    { value: 154, label: '154' },
+    { value: 404, label: '404' },
+    { value: 501, label: '501' },
+    { value: 701, label: '701' },
+    { value: 204, label: '204' },
+    { value: 1154, label: '1154' },
+    { value: 505, label: '505' },
+    { value: 304, label: '304' },
+  ];
 
   const fetchData = async () => {
     setLoading(true);
@@ -23,12 +32,24 @@ function App() {
       const params = {};
       if (search) params.search = search;
       if (featured) params.featured = featured;
-      if (price) params.price = price;
+      if (selectedPrices.length > 0) {
+        params.price = selectedPrices.map((price) => price.value);
+      }
 
       const response = await axios.get(
         'https://ela5l4r1wf.execute-api.ap-south-1.amazonaws.com/api',
         {
           params,
+          paramsSerializer: (params) => {
+            return Object.entries(params)
+              .map(([key, value]) => {
+                if (Array.isArray(value)) {
+                  return value.map((v) => `${key}=${v}`).join('&');
+                }
+                return `${key}=${value}`;
+              })
+              .join('&');
+          },
         }
       );
 
@@ -46,34 +67,18 @@ function App() {
 
   useEffect(() => {
     fetchData();
-  }, [search, featured, price]);
+  }, [search, featured, selectedPrices]);
 
   return (
     <div>
       <Container>
-        <h1 className="text-center mt-4">Product Keeper</h1>
+        <h1 className="text-center mt-4">Contact Keeper</h1>
         <Form>
           <Form.Group className="mb-3">
             <Form.Control
               onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search products"
+              placeholder="Search contacts"
             />
-          </Form.Group>
-          <Form.Group className="mb-3">
-            <InputGroup>
-              <Form.Control
-                as="select"
-                value={price}
-                onChange={(e) => setPrice(e.target.value)}
-              >
-                <option value="">All Prices</option>
-                {predefinedPrices.map((p) => (
-                  <option key={p} value={p}>
-                    {p}
-                  </option>
-                ))}
-              </Form.Control>
-            </InputGroup>
           </Form.Group>
           <Form.Group className="mb-3">
             <Form.Check
@@ -81,6 +86,15 @@ function App() {
               label="Featured"
               checked={featured}
               onChange={(e) => setFeatured(e.target.checked)}
+            />
+          </Form.Group>
+          <Form.Group className="mb-3">
+            <Form.Label>Price:</Form.Label>
+            <Select
+              options={predefinedPrices}
+              isMulti
+              value={selectedPrices}
+              onChange={(selectedOptions) => setSelectedPrices(selectedOptions)}
             />
           </Form.Group>
         </Form>
@@ -116,3 +130,5 @@ function App() {
 }
 
 export default App;
+
+

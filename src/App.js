@@ -77,7 +77,7 @@ function App() {
           <Form.Group className="mb-3">
             <Form.Control
               onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search contacts"
+              placeholder="Search Name,Company"
             />
           </Form.Group>
           <Form.Group className="mb-3">
